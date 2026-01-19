@@ -1,0 +1,16 @@
+{
+  "moduleId": "webwaka-core-incentives",
+  "version": "0.0.0",
+  "class": "core",
+  "name": "Incentives Core",
+  "description": "Incentives & Commissions - Incentive and commission calculation",
+  "repository": "https://github.com/changerplanet/webwaka-core-incentives",
+  "author": "WebWaka Team",
+  "license": "TBD",
+  "capabilities": [],
+  "dependencies": [],
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "main": "./dist/index.js"
+  }
+}
