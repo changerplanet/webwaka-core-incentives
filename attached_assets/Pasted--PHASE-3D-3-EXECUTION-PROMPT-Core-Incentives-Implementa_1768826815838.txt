@@ -1,0 +1,245 @@
+
+✅ PHASE 3D-3 — EXECUTION PROMPT
+
+(Core Incentives Implementation)
+
+⸻
+
+CONTEXT
+
+You are implementing Core Incentives for the WebWaka Modular Platform.
+
+This implementation is governed by:
+	•	WebWaka Ecosystem Constitution v1.3.1
+	•	Phase 3D-2 Core Incentives Specification (Approved)
+	•	Existing cores:
+	•	webwaka-core-ledger
+	•	webwaka-core-pricing
+	•	webwaka-core-entitlements
+	•	webwaka-core-identity
+
+This is a core substrate module, not a Suite.
+
+⸻
+
+TARGET REPOSITORY
+
+GitHub Repo (already exists):
+changerplanet/webwaka-core-incentives
+
+You must:
+	•	Clone the repo
+	•	Work directly on main (branch protection currently disabled)
+	•	Push commits directly to main
+
+⸻
+
+TECHNOLOGY CONSTRAINTS
+	•	Language: TypeScript
+	•	Type: Headless library (NO UI, NO server)
+	•	Runtime: Node 20+
+	•	Validation: Zod
+	•	Testing: Jest or Vitest
+	•	Database: ❌ NONE
+	•	Network / I/O: ❌ NONE
+
+⸻
+
+ABSOLUTE SCOPE RULES (NON-NEGOTIABLE)
+
+You MUST NOT implement:
+	•	❌ Wallets or balances
+	•	❌ Payouts or withdrawals
+	•	❌ Payment execution
+	•	❌ Subscription logic
+	•	❌ Entitlement enforcement
+	•	❌ UI or dashboards
+	•	❌ Background jobs
+	•	❌ Cron
+	•	❌ External API calls
+
+You MUST implement:
+	•	✅ Pure evaluation
+	•	✅ Deterministic outputs
+	•	✅ Ledger-ready results
+	•	✅ Offline-safe logic
+	•	✅ Snapshot support
+
+⸻
+
+IMPLEMENTATION REQUIREMENTS
+
+1️⃣ Domain Models (Zod-validated)
+
+Implement exactly the following (as per spec):
+	•	IncentiveDefinition
+	•	IncentiveRule
+	•	IncentiveRelationship
+	•	IncentiveEvaluationContext
+	•	IncentiveResult
+	•	Supporting enums & types
+
+All models must:
+	•	Be immutable by default
+	•	Be serializable
+	•	Enforce tenantId everywhere
+
+⸻
+
+2️⃣ Incentive Evaluation Engine
+
+Implement:
+
+evaluateIncentives(
+  definitions: IncentiveDefinition[],
+  rules: IncentiveRule[],
+  relationships: IncentiveRelationship[],
+  context: IncentiveEvaluationContext
+): IncentiveResult[]
+
+Engine rules:
+	•	Pure function
+	•	Deterministic
+	•	No side effects
+	•	Same input → same output (always)
+
+Support:
+	•	Flat incentives
+	•	Percentage incentives
+	•	Tiered incentives
+	•	Multi-level incentives (DAG only)
+	•	Lifetime incentives (flagged, not stored)
+
+⸻
+
+3️⃣ Precedence Enforcement (MANDATORY)
+
+Apply strict precedence:
+	1.	Individual overrides
+	2.	Explicit campaign rules
+	3.	Partner-level rules
+	4.	Tenant-level rules
+	5.	System defaults
+
+Lower precedence MUST NEVER merge with higher.
+
+⸻
+
+4️⃣ Ledger Compatibility
+
+Each IncentiveResult MUST:
+	•	Be directly convertible to a ledger event
+	•	Include:
+	•	subjectId
+	•	amount
+	•	unit (currency | points)
+	•	incentiveId
+	•	depth
+	•	trace
+	•	idempotencyKey (derived)
+
+No balances.
+No mutations.
+No persistence.
+
+⸻
+
+5️⃣ Snapshot Support (Offline-First)
+
+Implement:
+
+generateIncentiveSnapshot(...)
+evaluateFromSnapshot(...)
+verifySnapshotIntegrity(...)
+
+Rules:
+	•	Snapshot must be deterministic
+	•	Tampering must be detectable
+	•	Snapshot evaluation must equal live evaluation
+
+⸻
+
+6️⃣ Tenant Isolation (CRITICAL)
+	•	Every function must require tenantId
+	•	Cross-tenant resolution MUST throw
+	•	Referral chains must be tenant-scoped
+
+⸻
+
+7️⃣ Capabilities Registration
+
+Update module.manifest.json with:
+
+[
+  "incentive:evaluate",
+  "incentive:definition.create",
+  "incentive:rule.define",
+  "incentive:relationship.link",
+  "incentive:snapshot.generate",
+  "incentive:snapshot.verify"
+]
+
+
+⸻
+
+TESTING REQUIREMENTS (MANDATORY)
+
+You MUST implement tests proving:
+
+Hard Stop Condition
+
+Same inputs evaluated 10× produce identical results.
+
+Required Tests
+	•	Flat commission
+	•	Percentage commission
+	•	Tiered commission
+	•	Multi-level incentive (depth 3)
+	•	Override precedence
+	•	Snapshot parity (live vs snapshot)
+	•	Tampering detection
+	•	Tenant isolation failure case
+
+Coverage
+	•	Minimum 80%
+	•	Determinism tests explicitly repeated
+
+⸻
+
+FILE STRUCTURE (RECOMMENDED)
+
+src/
+  models/
+  engine/
+  evaluators/
+  snapshots/
+  utils/
+tests/
+module.manifest.json
+module.contract.md
+
+
+⸻
+
+FINAL DELIVERABLE
+
+After implementation, provide:
+
+Completion Report
+	•	Summary of what was implemented
+	•	Test results + coverage
+	•	Hard Stop proof
+	•	Confirmed exclusions
+	•	Final commit SHA
+
+⸻
+
+HARD STOP
+
+After submission:
+
+⛔ STOP
+⛔ Do NOT proceed to any other phase
+⛔ Await explicit authorization
+
+⸻
