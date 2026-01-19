@@ -6,22 +6,10 @@
  * @packageDocumentation
  */
 
-// Placeholder exports - implementation pending
+export * from './models/index.js';
+export * from './engine/index.js';
+export * from './evaluators/index.js';
+export * from './snapshots/index.js';
+export * from './utils/index.js';
+
 export const VERSION = '0.0.0';
-
-export interface IncentiveConfig {
-  tenantId: string;
-  // Additional configuration to be defined
-}
-
-export interface CommissionRule {
-  id: string;
-  tenantId: string;
-  // Rule definition to be defined
-}
-
-// Module initialization placeholder
-export function initIncentivesModule(config: IncentiveConfig): void {
-  // Implementation pending
-  console.log(`Initializing incentives module for tenant: ${config.tenantId}`);
-}

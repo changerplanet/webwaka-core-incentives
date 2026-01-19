@@ -7,7 +7,14 @@
   "repository": "https://github.com/changerplanet/webwaka-core-incentives",
   "author": "WebWaka Team",
   "license": "TBD",
-  "capabilities": [],
+  "capabilities": [
+    "incentive:evaluate",
+    "incentive:definition.create",
+    "incentive:rule.define",
+    "incentive:relationship.link",
+    "incentive:snapshot.generate",
+    "incentive:snapshot.verify"
+  ],
   "dependencies": [],
   "exports": {
     "types": "./dist/index.d.ts",
