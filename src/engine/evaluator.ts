@@ -141,11 +141,12 @@ function evaluateMultiLevelIncentive(
   const results: IncentiveResult[] = [];
   const maxDepth = definition.maxDepth ?? 1;
   
-  const referralChain = buildReferralChain(
-    context.subjectId,
+  const referralChain = buildReferralChain({
+    subjectId: context.subjectId,
     relationships,
-    maxDepth
-  );
+    maxDepth,
+    tenantId: context.tenantId
+  });
 
   for (const { referrerId, depth } of referralChain) {
     const evaluation = evaluateMultiLevel({

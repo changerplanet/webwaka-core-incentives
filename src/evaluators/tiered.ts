@@ -1,6 +1,10 @@
 import type { Tier } from '../models/types.js';
 import type { EvaluationParams, EvaluationOutput } from './flat.js';
 
+function canonicalRound(value: number): number {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+}
+
 export function evaluateTiered(params: EvaluationParams): EvaluationOutput {
   const { definition, rule, inputValue } = params;
   
@@ -32,12 +36,13 @@ export function evaluateTiered(params: EvaluationParams): EvaluationOutput {
     amount = applicableTier.flatAmount;
     calculation = `tiered(tier ${applicableTier.minValue}-${applicableTier.maxValue ?? '∞'}: flat ${amount})`;
   } else {
-    amount = (inputValue * applicableTier.rate) / 100;
+    const rawAmount = (inputValue * applicableTier.rate) / 100;
+    amount = canonicalRound(rawAmount);
     calculation = `tiered(tier ${applicableTier.minValue}-${applicableTier.maxValue ?? '∞'}: ${inputValue} * ${applicableTier.rate}% = ${amount})`;
   }
 
   return {
-    amount: Math.round(amount * 100) / 100,
+    amount,
     calculation
   };
 }

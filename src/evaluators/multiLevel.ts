@@ -1,4 +1,5 @@
 import type { IncentiveDefinition, IncentiveRelationship } from '../models/types.js';
+import { TenantIsolationError } from '../utils/validation.js';
 
 export interface MultiLevelParams {
   definition: IncentiveDefinition;
@@ -9,6 +10,10 @@ export interface MultiLevelParams {
 export interface MultiLevelOutput {
   amount: number;
   calculation: string;
+}
+
+function canonicalRound(value: number): number {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
 export function evaluateMultiLevel(params: MultiLevelParams): MultiLevelOutput {
@@ -27,30 +32,46 @@ export function evaluateMultiLevel(params: MultiLevelParams): MultiLevelOutput {
   const rateIndex = depth - 1;
   const rate = depthRates[rateIndex] ?? 0;
   
-  const amount = (inputValue * rate) / 100;
+  const rawAmount = (inputValue * rate) / 100;
+  const amount = canonicalRound(rawAmount);
   
   return {
-    amount: Math.round(amount * 100) / 100,
+    amount,
     calculation: `multiLevel(depth ${depth}: ${inputValue} * ${rate}% = ${amount})`
   };
 }
 
-export function buildReferralChain(
-  subjectId: string,
-  relationships: readonly IncentiveRelationship[],
-  maxDepth: number
-): Array<{ referrerId: string; depth: number }> {
+export interface BuildChainParams {
+  subjectId: string;
+  relationships: readonly IncentiveRelationship[];
+  maxDepth: number;
+  tenantId: string;
+}
+
+export function buildReferralChain(params: BuildChainParams): Array<{ referrerId: string; depth: number }> {
+  const { subjectId, relationships, maxDepth, tenantId } = params;
+  
   const chain: Array<{ referrerId: string; depth: number }> = [];
   const visited = new Set<string>();
   let currentId = subjectId;
   let currentDepth = 1;
 
+  const sortedRelationships = [...relationships].sort((a, b) => 
+    a.id.localeCompare(b.id)
+  );
+
   while (currentDepth <= maxDepth) {
-    const relationship = relationships.find(
+    const relationship = sortedRelationships.find(
       r => r.refereeId === currentId && r.isActive
     );
 
     if (!relationship) break;
+
+    if (relationship.tenantId !== tenantId) {
+      throw new TenantIsolationError(
+        `Referral relationship ${relationship.id} belongs to tenant ${relationship.tenantId}, not ${tenantId}`
+      );
+    }
 
     if (visited.has(relationship.referrerId)) {
       break;
