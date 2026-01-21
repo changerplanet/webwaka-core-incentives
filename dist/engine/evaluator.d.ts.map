@@ -1,0 +1,1 @@
+{"version":3,"file":"evaluator.d.ts","sourceRoot":"","sources":["../../src/engine/evaluator.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACV,mBAAmB,EACnB,aAAa,EACb,qBAAqB,EACrB,0BAA0B,EAC1B,eAAe,EAEhB,MAAM,oBAAoB,CAAC;AAS5B,wBAAgB,kBAAkB,CAChC,WAAW,EAAE,SAAS,mBAAmB,EAAE,EAC3C,KAAK,EAAE,SAAS,aAAa,EAAE,EAC/B,aAAa,EAAE,SAAS,qBAAqB,EAAE,EAC/C,OAAO,EAAE,0BAA0B,GAClC,eAAe,EAAE,CA8CnB"}

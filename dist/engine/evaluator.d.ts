@@ -1,0 +1,3 @@
+import type { IncentiveDefinition, IncentiveRule, IncentiveRelationship, IncentiveEvaluationContext, IncentiveResult } from '../models/types.js';
+export declare function evaluateIncentives(definitions: readonly IncentiveDefinition[], rules: readonly IncentiveRule[], relationships: readonly IncentiveRelationship[], context: IncentiveEvaluationContext): IncentiveResult[];
+//# sourceMappingURL=evaluator.d.ts.map
