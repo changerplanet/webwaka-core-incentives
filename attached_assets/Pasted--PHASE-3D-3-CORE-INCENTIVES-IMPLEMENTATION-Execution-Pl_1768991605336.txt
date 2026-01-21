@@ -1,0 +1,218 @@
+
+🔓 PHASE 3D-3 — CORE INCENTIVES IMPLEMENTATION
+
+Execution Platform: Replit
+Repository: changerplanet/webwaka-core-incentives
+Phase Type: Core / Headless / Deterministic Library
+Status: IMPLEMENTATION (spec locked)
+
+⸻
+
+CONTEXT (READ CAREFULLY)
+
+You are implementing Phase 3D-3 — Core Incentives for the WebWaka platform.
+
+This is a CORE SUBSTRATE MODULE, not a UI, not a runtime service.
+
+🚫 DO NOT build dashboards
+🚫 DO NOT build wallets or payouts
+🚫 DO NOT integrate payments
+🚫 DO NOT store balances
+🚫 DO NOT introduce databases
+🚫 DO NOT add cron jobs or background workers
+
+This module is pure evaluation only.
+
+⸻
+
+SOURCE OF TRUTH (IMMUTABLE)
+	•	WebWaka Ecosystem Constitution v1.5+
+	•	Phase 3D-2 Core Incentives Specification (LOCKED)
+
+All rules, precedence, exclusions, and guarantees come only from the specification.
+
+⸻
+
+REPOSITORY REQUIREMENT (CRITICAL)
+
+🔒 CLONING RULE (NON-NEGOTIABLE)
+	1.	You MUST clone the repository
+https://github.com/changerplanet/webwaka-core-incentives
+	2.	If the repository is empty:
+	•	Clone it AS-IS
+	•	🚫 DO NOT add placeholders
+	•	🚫 DO NOT scaffold templates
+	•	🚫 DO NOT add demo code
+	3.	If Replit auto-creates files:
+	•	DELETE them immediately
+	•	The repo must reflect only Phase 3D-3 implementation
+
+❗ If cloning fails → STOP and report
+
+⸻
+
+IMPLEMENTATION OBJECTIVE
+
+Implement a pure, deterministic incentive evaluation engine that:
+	•	Supports monetary incentives and points
+	•	Handles flat, percentage, tiered, multi-level, lifetime incentives
+	•	Produces ledger-ready results
+	•	Supports offline evaluation via snapshots
+	•	Enforces strict tenant isolation
+	•	Enforces strict precedence hierarchy
+
+⸻
+
+REQUIRED DOMAIN MODELS (ZOD-VALIDATED)
+
+You MUST implement all of the following (exact semantics from spec):
+	•	IncentiveDefinition
+	•	IncentiveRule
+	•	IncentiveValue
+	•	IncentiveRelationship
+	•	IncentiveEvaluationContext
+	•	IncentiveResult
+	•	IncentiveSnapshot
+
+All models must be:
+	•	Immutable
+	•	JSON-serializable
+	•	Deterministic
+
+⸻
+
+CORE APIs (MANDATORY)
+
+1️⃣ Incentive Evaluation
+
+evaluateIncentives(
+  definition: IncentiveDefinition,
+  context: IncentiveEvaluationContext,
+  rules: IncentiveRule[]
+): IncentiveResult[]
+
+Requirements
+	•	Pure function
+	•	No side effects
+	•	No mutation
+	•	Deterministic (10× repeat proof required)
+
+⸻
+
+2️⃣ Snapshot Support (MANDATORY)
+
+generateIncentiveSnapshot(...)
+verifySnapshot(snapshot)
+evaluateFromSnapshot(snapshot, context)
+
+Snapshot Guarantees
+	•	SHA-256 checksum
+	•	Deterministic snapshot ID
+	•	Tamper detection
+	•	Offline evaluable
+
+⸻
+
+PRECEDENCE (STRICT — MUST MATCH)
+
+From highest → lowest:
+	1.	Individual overrides
+	2.	Campaign rules
+	3.	Partner rules
+	4.	Tenant rules
+	5.	System defaults
+
+If precedence is violated → FAIL
+
+⸻
+
+TENANT ISOLATION (CRITICAL)
+	•	All inputs must include tenantId
+	•	Referral chains must validate tenant consistency
+	•	Cross-tenant access must throw a hard error
+
+⸻
+
+LEDGER READINESS (CRITICAL)
+
+Each IncentiveResult MUST include:
+	•	tenantId
+	•	subjectId
+	•	amount
+	•	currency or unit
+	•	sourceType: "incentive"
+	•	incentiveId
+	•	ruleId
+	•	idempotencyKey
+	•	Optional attribution chain
+
+❌ NO balance updates
+❌ NO wallet logic
+
+⸻
+
+TEST REQUIREMENTS (NON-NEGOTIABLE)
+
+You MUST implement tests proving:
+	1.	Determinism
+	•	Same inputs → same outputs (10× repeat)
+	2.	Precedence correctness
+	•	Higher precedence overrides lower
+	3.	Tenant isolation
+	•	Cross-tenant access rejected
+	4.	Snapshot integrity
+	•	Tampering detected
+	•	Offline evaluation matches live evaluation
+	5.	Multi-level attribution
+	•	Referral chains produce correct results
+
+Coverage
+	•	≥ 80% statement coverage (required)
+	•	Prefer ≥ 90%
+
+⸻
+
+EXPLICIT EXCLUSIONS (DO NOT IMPLEMENT)
+
+❌ Wallets
+❌ Payout execution
+❌ Subscriptions
+❌ Payments
+❌ Taxes
+❌ UI
+❌ Background jobs
+❌ External APIs
+❌ Persistence
+
+⸻
+
+REQUIRED FINAL OUTPUT
+
+When complete, produce a Completion Summary including:
+	•	APIs implemented
+	•	Incentive types supported
+	•	Precedence enforcement proof
+	•	Snapshot guarantees
+	•	Test count + coverage
+	•	Hard-Stop proof statement
+	•	Final commit SHA
+
+⸻
+
+⛔ HARD STOP
+
+After implementation:
+
+⛔ STOP
+⛔ DO NOT proceed to Phase 3E
+⛔ Await explicit authorization
+
+⸻
+
+ACKNOWLEDGEMENT FORMAT
+
+Reply only with:
+
+“Phase 3D-3 acknowledged. Implementing Core Incentives exactly as specified.”
+
+Then execute.
